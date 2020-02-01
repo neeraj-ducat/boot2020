@@ -1,10 +1,23 @@
 package com.ducat.entities;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+
 public class User {
 
 	private int id;
-	private String name,mailId;
+	@Pattern(regexp="[a-z,A-Z]{2}[a-z,A-Z, ]*",
+			message="Name can contain only alphabets and space, min length 2.")
+	private String name;
+	@NotEmpty(message="MailId is required.")
+	@Email(message="MailId should be in proper format.")
+	private String mailId;
+	@Length(min=4,message="Must contain atleast 4 chars.")
 	private String password;
+	
 	public int getId() {
 		return id;
 	}

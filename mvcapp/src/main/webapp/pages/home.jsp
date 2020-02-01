@@ -1,4 +1,3 @@
-<%@ page isELIgnored="true" %> 
 <h3>Welcome : ${user.name}</h3>
 <hr/>
 <a href="users/profile">View Profile</a><br/>

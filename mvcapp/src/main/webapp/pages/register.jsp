@@ -1,6 +1,13 @@
-<form action="/users/signup" method="post">
-Name. <input type="text" name="name"><br/>
-MailId <input type="text" name="mailId"><br/>
-Password <input type="password" name="password"><br/>
+<%@ taglib prefix="form" 
+uri="http://www.springframework.org/tags/form" %>
+
+<form:form action="/users/signup" method="post" 
+modelAttribute="user">
+Name: <form:input type="text" path="name" />
+<form:errors path="name"/> <br/>
+MailId: <form:input type="text" path="mailId"/>
+<form:errors path="mailId"/> <br/>
+Password: <form:input type="password" path="password"/>
+<form:errors path="password"/> <br/>
 <input type="submit" value="Register">
-</form>
+</form:form>
