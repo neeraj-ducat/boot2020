@@ -1,7 +1,12 @@
 package com.ducat.entities;
 
+import javax.persistence.*;
+
+@Entity
 public class Emp {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String name,job;
 	private int salary;

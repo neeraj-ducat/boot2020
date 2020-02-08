@@ -1,8 +1,7 @@
 package com.ducat.controllers;
 
 import java.util.List;
-
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,8 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ducat.dao.EmpDao;
+import com.ducat.dao.EmpRepository;
 import com.ducat.entities.Emp;
 
 @RestController
@@ -22,7 +20,7 @@ import com.ducat.entities.Emp;
 public class EmpController {
 
 	@Autowired
-	private EmpDao dao;
+	private EmpRepository dao;
 	
 	
 	//To save an Emp
@@ -37,7 +35,7 @@ public class EmpController {
 	@PutMapping(value="/",consumes="application/json",
 			produces="text/plain")
 	public String update(@RequestBody Emp e) {
-		dao.update(e);
+		dao.save(e);
 		return "successfully updated.";
 	}
 	
@@ -45,15 +43,24 @@ public class EmpController {
 	@DeleteMapping(value="/{id}",
 			produces="text/plain")
 	public String update(@PathVariable int id) {
-		dao.remove(id);
+		dao.deleteById(id);
 		return "successfully removed.";
 	}
 	
 	//To fetch all Employees
 	@GetMapping(value="/",
 			produces="application/json")
-	public List<Emp> getAll() throws Exception {
-	   return	dao.allEmp();
+	public Iterable<Emp> getAll() throws Exception {
+	   return	dao.findAll();
+		
+	}
+	
+	//To fetch all Employees using the given job
+	@GetMapping(value="/byJob/{job}",
+			produces="application/json")
+	public Iterable<Emp> getAllByJob(
+		@PathVariable	String job) throws Exception {
+	   return	dao.findByJob(job);
 		
 	}
 	
@@ -61,7 +68,11 @@ public class EmpController {
 	@GetMapping(value="/{id}",
 			produces="application/json")
 	public Emp getById(@PathVariable int id) throws Exception {
-	   return	dao.empById(id);
+	    Optional<Emp> optional = dao.findById(id);
+	    if(optional.isPresent())
+	    	return optional.get();
+	    else
+	    	return null;
 		
 	}
 }
